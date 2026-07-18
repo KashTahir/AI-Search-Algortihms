@@ -8,12 +8,10 @@ class Node:
         self.path = path
         self.g_cost = g_cost
 
-def graph_search(start_state, goal_state, graph):
+def graph_search(start_state, goal_state, graph, search_strategy, heuristic_func):
     """
     You are free to implement this however you like but you will most likely need to input the graph data structure G, the heuristic function h, the start state s, the goal state t, and the search strategy X  
     """
-
-    # ---- YOUR CODE HERE ----
 
     depth = 0
     initial_path = [start_state]
@@ -24,15 +22,27 @@ def graph_search(start_state, goal_state, graph):
     visited_nodes = set()
 
     while frontier_nodes:
-        # frontier sorting for each
-        # BFS - regular
-        # DFS - reverse
-        # Greedy - based on heuristic of that node (h)
-        # A* - based one heuristic + cost of that node (h + g)
 
-        curr_node = frontier_nodes.pop(0)
+        if search_strategy == "B":
+            frontier_nodes.sort(key=lambda n:n.depth)
+        # if search_strategy == "D":
+        #     frontier_nodes.sort(key=lambda n:n.depth, reverse=True)
+        # Greedy sorting based on heuristic of that node (h)
+        elif search_strategy == "G":
+            frontier_nodes.sort(key=lambda n:heuristic_func(n.value))
+        # A* sorting based one heuristic + cost of that node (h + g)
+        elif search_strategy == "A":
+            frontier_nodes.sort(key=lambda n:heuristic_func(n.value) + n.g_cost)
+    
+        
+        if search_strategy == "D":
+            # get the node that was last added - LIFO
+            curr_node = frontier_nodes.pop()
+        else:
+            # get the node that was first added - FIFO
+            curr_node = frontier_nodes.pop(0)
         curr_state = curr_node.value
-        print("expanding: ", curr_state)
+        # print("expanding: ", curr_state)
 
         # visit the node
         if curr_state in visited_nodes:
@@ -53,16 +63,14 @@ def graph_search(start_state, goal_state, graph):
                 next_node = Node(next_node_value, new_depth, new_path, new_cost)
 
                 frontier_nodes.append(next_node)
-                print("added: ", next_node_value)
+                # print("added: ", next_node_value)
 
             else:
                 continue
 
-        print("Frontier:", [node.value for node in frontier_nodes])
+        # print("Frontier:", [node.value for node in frontier_nodes])
+    
     return None
-
-# ---- INCLUDE ANY OTHER CODE THAT YOU NEED HERE ----
-
 
 if __name__ == "__main__":
 
@@ -93,7 +101,7 @@ if __name__ == "__main__":
     heuristic_func = lambda n: heuristic[n][goal_state]        
             
     # find and print the path. The vertices are numbered as they appear in the original graph. Add whatever inputs you need to your graph search function
-    path = graph_search(start_state, goal_state, graph)
+    path = graph_search(start_state, goal_state, graph, search_strategy, heuristic_func)
     if path is not None:
         path = str([state + 1 for state in path])
     print(path)
