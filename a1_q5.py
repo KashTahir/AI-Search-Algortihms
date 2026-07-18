@@ -32,6 +32,7 @@ def graph_search(start_state, goal_state, graph):
 
         curr_node = frontier_nodes.pop(0)
         curr_state = curr_node.value
+        print("expanding: ", curr_state)
 
         # visit the node
         if curr_state in visited_nodes:
@@ -43,17 +44,21 @@ def graph_search(start_state, goal_state, graph):
             return curr_node.path
         
         curr_neighbours = graph[curr_state]
-        for next_node_value, cost in enumerate(curr_neighbours):
-            if (cost is not None) and (next_node_value not in visited_nodes):
-                print(next_node_value, " is a previously unvisited neighbour of ", curr_state)
+        for next_node_value, next_node_cost in enumerate(curr_neighbours):
+            if (next_node_cost is not None) and (next_node_value not in visited_nodes):
+                
+                new_depth = curr_node.depth + 1
+                new_path = curr_node.path + [next_node_value]
+                new_cost = curr_node.g_cost + next_node_cost
+                next_node = Node(next_node_value, new_depth, new_path, new_cost)
 
+                frontier_nodes.append(next_node)
+                print("added: ", next_node_value)
 
             else:
                 continue
 
-
-
-
+        print("Frontier:", [node.value for node in frontier_nodes])
     return None
 
 # ---- INCLUDE ANY OTHER CODE THAT YOU NEED HERE ----
