@@ -1,36 +1,58 @@
 import sys
 import csv
 
+class Node:
+    def __init__(self, value, depth, path, g_cost):
+        self.value = value
+        self.depth = depth
+        self.path = path
+        self.g_cost = g_cost
 
-def graph_search(start_state):
+def graph_search(start_state, goal_state):
     """
     You are free to implement this however you like but you will most likely need to input the graph data structure G, the heuristic function h, the start state s, the goal state t, and the search strategy X  
     """
 
     # ---- YOUR CODE HERE ----
 
-    level = 0
+    depth = 0
     initial_path = [start_state]
     inital_g = 0
-    start_node = Node(start_state, level, initial_path, inital_g)
+    start_node = Node(start_state, depth, initial_path, inital_g)
 
     frontier_nodes = [start_node]
+    visited_nodes = set()
 
-    # frontier sorting for each
-    # BFS - regular
-    # DFS - reverse
-    # Greedy - based on heuristic of that node (h)
-    # A* - based one heuristic + cost of that node (h + g)
+    while frontier_nodes:
+        # frontier sorting for each
+        # BFS - regular
+        # DFS - reverse
+        # Greedy - based on heuristic of that node (h)
+        # A* - based one heuristic + cost of that node (h + g)
+
+        curr_node = frontier_nodes.pop(0)
+        curr_state = curr_node.value
+
+        # visit the node
+        if curr_state in visited_nodes:
+            continue
+        else:
+            visited_nodes.add(curr_state)
+
+        if curr_state == goal_state:
+            return curr_node.path
+        
+        curr_neighbours = graph[curr_state]
+        for next_node_value, cost in enumerate(curr_neighbours):
+            if (cost) and (next_node_value not in visited_nodes):
+                print(next_node_value + " is a previously unvisited neighbour of " + curr_state)
+            else:
+                continue
+
+
 
 
     return None
-
-class Node:
-    def __init__(self, value, level, path, g_cost):
-        self.value = value
-        self.level = level
-        self.path = path
-        self.g_cost = g_cost
 
 # ---- INCLUDE ANY OTHER CODE THAT YOU NEED HERE ----
 
