@@ -8,7 +8,7 @@ class Node:
         self.path = path
         self.g_cost = g_cost
 
-def graph_search(start_state, goal_state):
+def graph_search(start_state, goal_state, graph):
     """
     You are free to implement this however you like but you will most likely need to input the graph data structure G, the heuristic function h, the start state s, the goal state t, and the search strategy X  
     """
@@ -17,8 +17,8 @@ def graph_search(start_state, goal_state):
 
     depth = 0
     initial_path = [start_state]
-    inital_g = 0
-    start_node = Node(start_state, depth, initial_path, inital_g)
+    initial_g = 0
+    start_node = Node(start_state, depth, initial_path, initial_g)
 
     frontier_nodes = [start_node]
     visited_nodes = set()
@@ -44,8 +44,10 @@ def graph_search(start_state, goal_state):
         
         curr_neighbours = graph[curr_state]
         for next_node_value, cost in enumerate(curr_neighbours):
-            if (cost) and (next_node_value not in visited_nodes):
-                print(next_node_value + " is a previously unvisited neighbour of " + curr_state)
+            if (cost is not None) and (next_node_value not in visited_nodes):
+                print(next_node_value, " is a previously unvisited neighbour of ", curr_state)
+
+
             else:
                 continue
 
@@ -86,7 +88,7 @@ if __name__ == "__main__":
     heuristic_func = lambda n: heuristic[n][goal_state]        
             
     # find and print the path. The vertices are numbered as they appear in the original graph. Add whatever inputs you need to your graph search function
-    path = graph_search()
+    path = graph_search(start_state, goal_state, graph)
     if path is not None:
         path = str([state + 1 for state in path])
     print(path)
