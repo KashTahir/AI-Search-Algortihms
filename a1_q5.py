@@ -2,12 +2,19 @@ import sys
 import csv
 
 
-def graph_search():
+def graph_search(start_state):
     """
     You are free to implement this however you like but you will most likely need to input the graph data structure G, the heuristic function h, the start state s, the goal state t, and the search strategy X  
     """
-    
+
     # ---- YOUR CODE HERE ----
+
+    level = 0
+    initial_path = [start_state]
+    inital_g = 0
+    start_node = Node(start_state, level, initial_path, inital_g)
+
+    frontier_nodes = [start_node]
 
     # frontier sorting for each
     # BFS - regular
@@ -15,9 +22,15 @@ def graph_search():
     # Greedy - based on heuristic of that node (h)
     # A* - based one heuristic + cost of that node (h + g)
 
-    # need to fill frontier using graph matrix
+
     return None
 
+class Node:
+    def __init__(self, value, level, path, g_cost):
+        self.value = value
+        self.level = level
+        self.path = path
+        self.g_cost = g_cost
 
 # ---- INCLUDE ANY OTHER CODE THAT YOU NEED HERE ----
 
