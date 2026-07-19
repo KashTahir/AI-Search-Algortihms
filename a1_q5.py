@@ -1,13 +1,6 @@
 import sys
 import csv
 
-class Node:
-    def __init__(self, value, depth, path, g_cost):
-        self.value = value
-        self.depth = depth
-        self.path = path
-        self.g_cost = g_cost
-
 def graph_search(start_state, goal_state, graph, search_strategy, heuristic_func):
     """
     You are free to implement this however you like but you will most likely need to input the graph data structure G, the heuristic function h, the start state s, the goal state t, and the search strategy X  
@@ -25,8 +18,6 @@ def graph_search(start_state, goal_state, graph, search_strategy, heuristic_func
 
         if search_strategy == "B":
             frontier_nodes.sort(key=lambda n:n.depth)
-        # if search_strategy == "D":
-        #     frontier_nodes.sort(key=lambda n:n.depth, reverse=True)
         # Greedy sorting based on heuristic of that node (h)
         elif search_strategy == "G":
             frontier_nodes.sort(key=lambda n:heuristic_func(n.value))
@@ -42,7 +33,6 @@ def graph_search(start_state, goal_state, graph, search_strategy, heuristic_func
             # get the node that was first added - FIFO
             curr_node = frontier_nodes.pop(0)
         curr_state = curr_node.value
-        # print("expanding: ", curr_state)
 
         # visit the node
         if curr_state in visited_nodes:
@@ -63,14 +53,17 @@ def graph_search(start_state, goal_state, graph, search_strategy, heuristic_func
                 next_node = Node(next_node_value, new_depth, new_path, new_cost)
 
                 frontier_nodes.append(next_node)
-                # print("added: ", next_node_value)
-
             else:
                 continue
-
-        # print("Frontier:", [node.value for node in frontier_nodes])
     
     return None
+
+class Node:
+    def __init__(self, value, depth, path, g_cost):
+        self.value = value
+        self.depth = depth
+        self.path = path
+        self.g_cost = g_cost
 
 if __name__ == "__main__":
 
